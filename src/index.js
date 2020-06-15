@@ -4,28 +4,21 @@ const app = express();
 app.use(express.json());
 const projects = [];
 app.get('/projects', (request, response) => {
-    // //console.log('Passei por get');
-    // //const { title, owner } = request.query;  
-    // const query = request.query;  
-    // console.log(query);
-    //console.log(title);
-    //console.log(owner);
-    return response.json(projects);
+    const { title } = request.query;
+    const results = title
+      ? projects.filter(project => project.title.includes(title))
+      : projects;
+
+    return response.json(results);
 })
 
 app.post('/projects', (request, response) => {
-    //const body = request.body;
-    //console.log('Passei por post');
     const { title, owner } = request.body;
     const project = { id: uuid(), title, owner };
     projects.push(project);
-    //console.log(body);
     return response.json(project);
 })
 app.put('/projects/:id', (request, response) => {
-    //const params = request.params;
-    //console.log(params);
-    //console.log('Passei por put');
     const { title, owner } = request.body;
     const { id } = request.params;
     const projectIndex = projects.findIndex(project => project.id === id);
@@ -53,5 +46,5 @@ app.delete('/projects/:id', (request, response) => {
 
 
 app.listen(3333, () => {
-    console.log('😍😍😍Backed started')
+    console.log('😍😍😍Backed started ola');
 });
